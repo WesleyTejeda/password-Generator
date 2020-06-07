@@ -24,7 +24,7 @@ function generatePassword() {
   //Temporary variable while we generate password, we will return this variable at the end of the function
   var tempPass= "";
   //Asks user for password length
-  var passLength = prompt("How many characters would you like the password to have? Our generator can create between 8 and 129 characters.");
+  var passLength = prompt("How many characters would you like the password to have? Our generator can create between 8 and 128 characters.");
   //If the password length does not meet criteria function will stop
   if(passLength > 129 || passLength < 8){
     alert("Sorry, please choose between 8 and 129 characters. Click generate again.");
