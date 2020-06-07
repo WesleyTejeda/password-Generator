@@ -16,7 +16,7 @@ function writePassword() {
 }
 //Generates a password
 function generatePassword() {
-  //Keeps track of what types user wants
+  //Keeps track of what types user wants, initializes back to false if button clicked again
   var wouldLikeLC = false;
   var wouldLikeUP = false;
   var wouldLikeNumb = false;
@@ -69,6 +69,7 @@ function userChoice(arg1,arg2){
   return arg1;
 }
 //Retrieves the char to build to tempChar in generate function
+//This function adds an extra layer of verification for the small chance that a user could choose two types but random number generated keeps falling on one type
 function getChar(arg1, arg2, arg3, arg4, choice1, choice2, choice3, choice4){
   var tempChar = "";
   var run = true;
