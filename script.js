@@ -1,19 +1,14 @@
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
-var wouldLikeLC = false;
-var wouldLikeUP = false;
-var wouldLikeNumb = false;
-var wouldLikeSpecChar = false;
-//Strings for our password criteria
+//Strings for our password criteria, they must be seperate in order to distinguish types user wants later in our functions
 var lowerCaseAlpha="abcdefghijklmnopqrstuvwxyz";
 var upperCaseAlpha="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var numbers="0123456789";
-//23 special characters
 var specialChar="@%+\\/\'!#$^?:,)(}{][~-_.";
 // Write password to the #password input
 function writePassword() {
   var password = generatePassword();
-  console.log(password);
+  //Won't run the next lines in function to avoid textbox change if exit
   if(password !== false){
   var passwordText = document.querySelector("#password");
   passwordText.value = password;
@@ -21,8 +16,11 @@ function writePassword() {
 }
 //Generates a password
 function generatePassword() {
-  //Keeps track of different types user wants, resets each time this function is called
-  var cases=0;
+  //Keeps track of what types user wants
+  var wouldLikeLC = false;
+  var wouldLikeUP = false;
+  var wouldLikeNumb = false;
+  var wouldLikeSpecChar = false;
   //Temporary variable while we generate password, we will return this variable at the end of the function
   var tempPass= "";
   //Asks user for password length
@@ -32,24 +30,25 @@ function generatePassword() {
     alert("Sorry, please choose between 8 and 129 characters. Click generate again.");
     return false;
   }
-  //As long as run === true the loop will run, exits loops if user chooses to leave or if criteria met to create password
+  //As long as run is true the loop will run, exits loops if user chooses to leave or if criteria met to create password
   var run = true;
   while(run){
-    //Calls userChoice function for user input, cases will increase by 1 if user wants this type
-    cases = userChoice(wouldLikeLC,"lowercase", cases);
-    cases = userChoice(wouldLikeUP,"uppercase", cases);
-    cases = userChoice(wouldLikeNumb,"number", cases);
-    cases = userChoice(wouldLikeSpecChar,"special", cases);
-    //If password criteria is met cases > 0 and while loop will end
-    if(cases > 0){
+    //Calls userChoice function for user input, wouldLike vars will be set to true if user wants this type
+    wouldLikeLC = userChoice(wouldLikeLC,"lowercase");
+    wouldLikeUP = userChoice(wouldLikeUP,"uppercase");
+    wouldLikeNumb = userChoice(wouldLikeNumb,"number");
+    wouldLikeSpecChar = userChoice(wouldLikeSpecChar,"special");
+    console.log("Lowercase: " + wouldLikeLC + "| Uppercase: " + wouldLikeUP + "| Numbers: " + wouldLikeNumb + "| Special Characters: " + wouldLikeSpecChar);
+    //If password criteria is met of at least one type then while loop will end
+    if(wouldLikeLC || wouldLikeUP|| wouldLikeNumb|| wouldLikeSpecChar){
       alert("Click ok to generate your password");
       run = false;
     }
-    //If criteria is not met then user will be alerted and will have the chance to either run input loop again or exit
+    //If criteria not met then user will have the chance to either run input loop with same length again or exit
     else {
       var stayInLoop= confirm("Sorry we cannot make a password without any characters. Please choose at least one character type. Would you like to run this one more time with the same length provided?");
       if(stayInLoop === false){
-      alert("No further input required.");
+      alert("You've decided to exit. No further input required.");
       run = false;
       return false;
       }
@@ -57,51 +56,41 @@ function generatePassword() {
   }
   //For loop to generate password
   for(var x=0; x < passLength; x++){
+    //Builds a string one character at a time for each iteration
     tempPass += getChar(lowerCaseAlpha,upperCaseAlpha,numbers,specialChar,wouldLikeLC,wouldLikeUP,wouldLikeNumb,wouldLikeSpecChar);
   }
   return tempPass;
 }
 //This function is a condensed version of input for the wouldLike variables
-function userChoice(arg1,arg2, arg3){
+function userChoice(arg1,arg2){
+  //Asks user if they would like type
   arg1 = confirm("Would you like "+ arg2 + " characters in your password?");
-  if(arg1){
-    //Our cases variable is hard coded to this function. If user wants this type of char cases will increase by 1
-    arg3++;
-    console.log("Cases: " + arg3);
-    console.log(arg1);
-  }
-  //cases variable is returned to be reassigned to new value if increased, since the variable isn't defined in this function we must return it in order for cases variable to be accurate
-  return arg3;
+  //wouldLike variable is returned to be reassigned to new value
+  return arg1;
 }
+//Retrieves the char to build to tempChar in generate function
 function getChar(arg1, arg2, arg3, arg4, choice1, choice2, choice3, choice4){
-  var tempChar = "2";
+  var tempChar = "";
   var run = true;
-  //while(run){
+  while(run){
     //Generates a number between 0-3 to decide which type to pick for next character to add to password
     //If the user did not select that type it will not be included
+    //If random number lands on type not included, goes to top of while and generates a new number until found
     var rand = (Math.floor(Math.random() * 4));
-    console.log("rand::"+rand);
-    if((rand == 0)){
+    if(rand == 0 && choice1 == true){
       tempChar = arg1.charAt(Math.floor(Math.random() * arg1.length));
-      console.log(tempChar);
       run = false;
-    } else if((rand == 1)){
+    } else if(rand == 1 && choice2 == true){
       tempChar = arg2.charAt(Math.floor(Math.random() * arg2.length));
-      console.log(tempChar);
       run = false;
-    } else if((rand == 2)){
+    } else if(rand == 2 && choice3 == true){
       tempChar = arg3.charAt(Math.floor(Math.random() * arg3.length));
-      console.log(tempChar);
       run = false;
-    } else if((rand == 3)){
+    } else if(rand == 3 && choice4 == true){
       tempChar = arg4.charAt(Math.floor(Math.random() * arg4.length));
-      console.log(tempChar);
       run = false;
     }
-    else
-      console.log("not found running loop again");
-      run = false;
-  //}
+  }
   return tempChar;
 }
 // Add event listener to generate button
