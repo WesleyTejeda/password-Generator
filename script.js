@@ -59,6 +59,7 @@ function generatePassword() {
     //Builds a string one character at a time for each iteration
     tempPass += getChar(lowerCaseAlpha,upperCaseAlpha,numbers,specialChar,wouldLikeLC,wouldLikeUP,wouldLikeNumb,wouldLikeSpecChar);
   }
+  //returns a password of desired characters the length user decided
   return tempPass;
 }
 //This function is a condensed version of input for the wouldLike variables
@@ -68,7 +69,7 @@ function userChoice(arg1,arg2){
   //wouldLike variable is returned to be reassigned to new value
   return arg1;
 }
-//Retrieves the char to build to tempChar in generate function
+//getChar retrieves the char to build to tempChar in generate function
 //This function adds an extra layer of verification for the small chance that a user could choose two types but random number generated keeps falling on one type
 function getChar(arg1, arg2, arg3, arg4, choice1, choice2, choice3, choice4){
   var tempChar = "";
