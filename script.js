@@ -27,7 +27,7 @@ function generatePassword() {
   var passLength = prompt("How many characters would you like the password to have? Our generator can create between 8 and 128 characters.");
   //If the password length does not meet criteria function will stop
   if(passLength > 129 || passLength < 8){
-    alert("Sorry, please choose between 8 and 129 characters. Click generate again.");
+    alert("Sorry, please choose between 8 and 128 characters. Click generate again.");
     return false;
   }
   //As long as run is true the loop will run, exits loops if user chooses to leave or if criteria met to create password
