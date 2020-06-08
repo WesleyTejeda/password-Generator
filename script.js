@@ -5,6 +5,11 @@ var lowerCaseAlpha="abcdefghijklmnopqrstuvwxyz";
 var upperCaseAlpha="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var numbers="0123456789";
 var specialChar="@%+\\/\'!#$^?:,)(}{][~-_.";
+//Keeps track of what types user wants
+var wouldLikeLC = false;
+var wouldLikeUP = false;
+var wouldLikeNumb = false;
+var wouldLikeSpecChar = false;
 // Write password to the #password input
 function writePassword() {
   var password = generatePassword();
@@ -16,11 +21,6 @@ function writePassword() {
 }
 //Generates a password
 function generatePassword() {
-  //Keeps track of what types user wants, initializes back to false if button clicked again
-  var wouldLikeLC = false;
-  var wouldLikeUP = false;
-  var wouldLikeNumb = false;
-  var wouldLikeSpecChar = false;
   //Temporary variable while we generate password, we will return this variable at the end of the function
   var tempPass= "";
   //Asks user for password length
@@ -46,7 +46,7 @@ function generatePassword() {
     }
     //If criteria not met then user will have the chance to either run input loop with same length again or exit
     else {
-      var stayInLoop= confirm("Sorry we cannot make a password without any characters. Please choose at least one character type. Would you like to run this one more time with the same length provided?");
+      var stayInLoop= confirm("Sorry we cannot make a password without any character types. Please choose at least one character type. Would you like to run this one more time with the same length provided?");
       if(stayInLoop === false){
       alert("You've decided to exit. No further input required.");
       run = false;
@@ -57,7 +57,7 @@ function generatePassword() {
   //For loop to generate password
   for(var x=0; x < passLength; x++){
     //Builds a string one character at a time for each iteration
-    tempPass += getChar(lowerCaseAlpha,upperCaseAlpha,numbers,specialChar,wouldLikeLC,wouldLikeUP,wouldLikeNumb,wouldLikeSpecChar);
+    tempPass += getChar();
   }
   //returns a password of desired characters the length user decided
   return tempPass;
@@ -70,30 +70,29 @@ function userChoice(arg1,arg2){
   return arg1;
 }
 //getChar retrieves the char to build to tempChar in generate function
-//This function adds an extra layer of verification for the small chance that a user could choose two types but random number generated keeps falling on one type
-function getChar(arg1, arg2, arg3, arg4, choice1, choice2, choice3, choice4){
+function getChar(){
   var tempChar = "";
   var run = true;
   while(run){
     //Generates a number between 0-3 to decide which type to pick for next character to add to password
     //If the user did not select that type it will not be included
-    //If random number lands on type not included, goes to top of while and generates a new number until found
+    //If random number lands on type not included, a new random number will generate
     var rand = (Math.floor(Math.random() * 4));
-    if(rand == 0 && choice1 == true){
-      tempChar = arg1.charAt(Math.floor(Math.random() * arg1.length));
+    if(rand == 0 && wouldLikeLC == true){
+      tempChar = lowerCaseAlpha.charAt(Math.floor(Math.random() * lowerCaseAlpha.length));
       run = false;
-    } else if(rand == 1 && choice2 == true){
-      tempChar = arg2.charAt(Math.floor(Math.random() * arg2.length));
+    } else if(rand == 1 && wouldLikeUP == true){
+      tempChar = upperCaseAlpha.charAt(Math.floor(Math.random() * upperCaseAlpha.length));
       run = false;
-    } else if(rand == 2 && choice3 == true){
-      tempChar = arg3.charAt(Math.floor(Math.random() * arg3.length));
+    } else if(rand == 2 && wouldLikeNumb == true){
+      tempChar = numbers.charAt(Math.floor(Math.random() * numbers.length));
       run = false;
-    } else if(rand == 3 && choice4 == true){
-      tempChar = arg4.charAt(Math.floor(Math.random() * arg4.length));
+    } else if(rand == 3 && wouldLikeSpecChar == true){
+      tempChar = specialChar.charAt(Math.floor(Math.random() * specialChar.length));
       run = false;
     }
   }
   return tempChar;
 }
 // Add event listener to generate button
-generateBtn.addEventListener("click", writePassword)
+generateBtn.addEventListener("click", writePassword);
