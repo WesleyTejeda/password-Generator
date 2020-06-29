@@ -1,7 +1,7 @@
 # password-Generator
 By: ```Wesley Tejeda```
 
-Deployed link: [https://wesleytejeda.github.io/password-generator]
+Deployed link: [https://wesleytejeda.github.io/password-Generator]
 
 My GitHub : [https://github.com/wesleytejeda]
 ## General:
